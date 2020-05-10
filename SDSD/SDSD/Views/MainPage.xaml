@@ -1,0 +1,362 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:controls="clr-namespace:PanCardView.Controls;assembly=PanCardView"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:pancakeView="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:cardView="clr-namespace:PanCardView;assembly=PanCardView"
+             xmlns:proc="clr-namespace:PanCardView.Processors;assembly=PanCardView"
+             xmlns:models="clr-namespace:SDSD.Models"
+              xmlns:viewmodels="clr-namespace:SDSD.ViewModels"
+    x:DataType="viewmodels:MainPageViewModel"
+    BackgroundColor="#103E72"
+    NavigationPage.HasNavigationBar="False"
+             mc:Ignorable="d"
+             x:Class="SDSD.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ActiveIndicatorColor" TargetType="controls:IndicatorsControl">
+                <Setter Property="BackgroundColor" Value="#4867EA" />
+            </Style>
+            <Style x:Key="InactiveIndicatorColor" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="OutlineColor" Value="#bdbdbd" />
+            </Style>
+            <Style x:Key="btnConfirm" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Black" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="TextColor" Value="White" />
+            </Style>
+            <Style x:Key="frameConfirm" TargetType="pancakeView:PancakeView">
+                <Setter Property="BackgroundColor" Value="Black" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="Padding" Value="0" />
+            </Style>
+            <Color x:Key="colorPink">#FF1577</Color>
+            <Color x:Key="colorWhite">#ffffff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid BackgroundColor="#103E72">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid
+            Grid.Row="0"
+            Margin="40,20,0,10"
+            ColumnSpacing="20">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <ImageButton
+                Grid.Column="0"
+                Aspect="AspectFit"
+                BackgroundColor="Transparent"
+                HeightRequest="30"
+                Source="download.png"
+                WidthRequest="22" />
+            <Label
+                                            TextColor="{StaticResource colorWhite}"
+                 Grid.Column="1"
+                            FontFamily="ThemeFontSemiBold"
+                            FontSize="20"
+                            HorizontalOptions="StartAndExpand"
+                            Text="Dashboard" />
+
+            <BoxView
+                Grid.Column="1"
+                Margin="0,0,-3,0"
+                BackgroundColor="Red"
+                CornerRadius="6"
+                HeightRequest="12"
+                HorizontalOptions="End"
+                VerticalOptions="Start"
+                WidthRequest="12" />
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="auto" />
+            </Grid.ColumnDefinitions>
+            <Image
+                Grid.Column="0"
+                Margin="-5,10,0,0"
+                Aspect="AspectFit"
+                HeightRequest="50"
+                Source="ic_x_left.png"
+                TranslationY="20"
+                WidthRequest="28" />
+            <StackLayout Grid.Column="1" Margin="0,20" Padding="0">
+
+                <Label  TextColor="{StaticResource colorWhite}">
+                    <Label.FormattedText>
+                        <FormattedString>
+                            <Span FontFamily="ThemeFontMedium" FontSize="18" Text="Welcome, " />
+                            <Span FontFamily="ThemeFontSemiBold" FontSize="22" Text="{Binding Username}"/>
+                        </FormattedString>
+                    </Label.FormattedText>
+                </Label>
+
+            </StackLayout>
+
+            <Image
+                Grid.Column="2"
+                Margin="0,0,-5,0"
+                Aspect="AspectFit"
+                HeightRequest="28"
+                Source="ic_x_right.png"
+                WidthRequest="28" />
+        </Grid>
+        <ScrollView Grid.Row="2">
+            <pancakeView:PancakeView BackgroundColor="{StaticResource colorWhite}" CornerRadius="60,60,0,0">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <StackLayout
+                        Grid.Row="0"
+                        Margin="35,25,45,10"
+                        Orientation="Horizontal">
+                        <Label
+                            FontFamily="ThemeFontSemiBold"
+                            FontSize="22"
+                            HorizontalOptions="StartAndExpand"
+                            Text="Vessels" />
+                        <pancakeView:PancakeView
+                Style="{StaticResource frameConfirm}">
+                            <Button
+                    Command="{Binding NavigateToAddVesselPageCommand}"
+                    Style="{StaticResource btnConfirm}"
+                    Text="Add Vessel" />
+                        </pancakeView:PancakeView>
+                    </StackLayout>
+                    <cardView:CoverFlowView
+                        Grid.Row="1"
+                        x:Name="listVessels"
+                        IsCyclical="False"
+                        SelectedItem="{Binding VesselSelectedItem, Mode=TwoWay}"
+                        ItemsSource="{Binding Vessels}"
+                        PositionShiftValue="65">
+                        <x:Arguments>
+                            <proc:BaseCoverFlowFrontViewProcessor RotationFactor="0.5" ScaleFactor="0.75" />
+                            <proc:BaseCoverFlowBackViewProcessor ScaleFactor="0.75" />
+                        </x:Arguments>
+                        <cardView:CoverFlowView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Vessel">
+                                <pancakeView:PancakeView
+                                    Margin="35,0,44,35"
+                                    Padding="0"
+                                    BackgroundColor="{StaticResource colorWhite}"
+                                    CornerRadius="15"
+                                    Elevation="10"
+                                    HasShadow="False"
+                                    HeightRequest="180">
+                                    <Grid RowSpacing="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="auto" />
+                                            <RowDefinition Height="*" />
+                                            <RowDefinition Height="auto" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <Image
+                                            Grid.RowSpan="3"
+                                            Grid.ColumnSpan="2"
+                                            Aspect="AspectFill"
+                                            HorizontalOptions="FillAndExpand"
+                                            Source="{Binding vesselBackground}"
+                                            VerticalOptions="FillAndExpand" />
+                                        <Label
+                                            Grid.Row="0"
+                                            Grid.ColumnSpan="2"
+                                            Margin="15,10,0,0"
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="20"
+                                            FontAttributes="Bold"
+                                            Text="{Binding vesselType}"
+                                            TextColor="{StaticResource colorWhite}"
+                                            VerticalOptions="Start" />
+                                        <Image
+                                            Grid.Row="0"
+                                            Grid.Column="1"
+                                            Margin="0,0,15,10"
+                                            Aspect="AspectFit"
+                                            HeightRequest="36"
+                                            Source="ic_close.png"
+                                            VerticalOptions="End" 
+                                            WidthRequest="48" >
+                                            <Image.GestureRecognizers>
+                                                <TapGestureRecognizer 
+                                                     x:DataType="{x:Null}"
+                                                Command="{Binding Path=BindingContext.DeleteVesselCommand, Source={x:Reference listVessels}}"
+                                                CommandParameter="{Binding .}"
+                                                    NumberOfTapsRequired="1" />
+                                            </Image.GestureRecognizers>
+                                        </Image>
+                                        <Label
+                                            Grid.Row="1"
+                                            Grid.ColumnSpan="2"
+                                            Margin="{OnPlatform Android='15,0,0,34',
+                                                                iOS='15,0,0,38'}"
+                                            Padding="5"
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="{OnPlatform Android='18',
+                                                                  iOS='18'}"
+                                            Text="{Binding vesselRegNumber}"
+                                            TextColor="{StaticResource colorWhite}"
+                                            FontAttributes="Bold"
+                                            VerticalOptions="End" />
+                                        <Label
+                                            Grid.Row="2"
+                                            Grid.ColumnSpan="2"
+                                            Margin="15,0,0,5"
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="20"
+                                            FontAttributes="Bold"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding vesselName}"
+                                            TextColor="{StaticResource colorWhite}"
+                                            VerticalOptions="Center" />
+                                        <Image
+                                            Grid.Row="2"
+                                            Grid.Column="1"
+                                            Margin="0,0,15,10"
+                                            Aspect="AspectFit"
+                                            HeightRequest="36"
+                                            Source="download.png"
+                                            WidthRequest="48" >
+                                            
+                                        </Image>
+                                    </Grid>
+                                </pancakeView:PancakeView>
+                            </DataTemplate>
+                        </cardView:CoverFlowView.ItemTemplate>
+                        <controls:IndicatorsControl
+                            Margin="0,20,0,0"
+                            IsVisible="True"
+                            SelectedIndicatorStyle="{StaticResource ActiveIndicatorColor}"
+                            UnselectedIndicatorStyle="{StaticResource InactiveIndicatorColor}" />
+                    </cardView:CoverFlowView>
+                    <StackLayout
+                        Grid.Row="2"
+                        Margin="38,20,20,0"
+                        Orientation="Horizontal"
+                        Spacing="0">
+                        <Label
+                            FontFamily="ThemeFontSemiBold"
+                            FontSize="20"
+                            HorizontalOptions="StartAndExpand"
+                            Text="Our Crew"
+                            VerticalOptions="Center" />
+
+                        <Button
+                             Margin="0,2,5,0"
+                            FontFamily="ThemeFontMedium"
+                            FontSize="Micro"
+                            BackgroundColor="#103E72"
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
+                    Command="{Binding NavigateToAddCrewPageCommand}"
+                    Style="{StaticResource btnConfirm}"
+                    Text="Add Crew" />
+                    </StackLayout>
+                    <CollectionView
+                        x:Name="listCrew"
+                        Grid.Row="3"
+                        Margin="35,0,0,0"
+                        ItemsSource="{Binding Crews}"
+                        SelectionMode="None"
+                        VerticalScrollBarVisibility="Never">
+                        <CollectionView.ItemsLayout>
+                            <LinearItemsLayout Orientation="Vertical" />
+                        </CollectionView.ItemsLayout>
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="models:Crew">
+                                <Grid RowSpacing="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*" />
+                                        <RowDefinition Height="0.3" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <pancakeView:PancakeView
+                                        Grid.Row="0"
+                                        Grid.Column="0"
+                                        Margin="5,20,0,20"
+                                        Padding="15"
+                                        BackgroundColor="#F5F6FA"
+                                        CornerRadius="20"
+                                        Elevation="6"
+                                        HasShadow="False">
+                                        <Image
+                                            Aspect="AspectFit"
+                                            HeightRequest="36"
+                                            Source="{Binding crewImage}"
+                                            WidthRequest="36" />
+                                    </pancakeView:PancakeView>
+                                    <StackLayout
+                                        Grid.Row="0"
+                                        Grid.Column="1"
+                                        Margin="20,0,0,0"
+                                        Spacing="0"
+                                        VerticalOptions="Center">
+                                        <Label
+                                            FontFamily="ThemeFontMedium"
+                                            FontSize="17"
+                                            LineBreakMode="TailTruncation"
+                                            Text="{Binding firstName}" />
+                                        <Label
+                                            FontSize="Small"
+                                            Text="{Binding role}"
+                                            TextColor="#C0C4D5" />
+                                    </StackLayout>
+                                    <Label
+                                        Grid.Row="0"
+                                        Grid.Column="2"
+                                        Margin="0,-15,22,0"
+                                        FontFamily="ThemeFontMedium"
+                                        FontSize="12"
+                                        Text="{Binding vesselType}"
+                                        TextColor="{StaticResource colorPink}"
+                                        VerticalOptions="Center">
+                                    </Label>
+                                    <BoxView
+                                        Grid.Row="1"
+                                        Grid.ColumnSpan="3"
+                                        Margin="5,0,0,0"
+                                        BackgroundColor="#bdbdbd"
+                                        HeightRequest="1"
+                                        HorizontalOptions="FillAndExpand" />
+                                </Grid>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                        <CollectionView.EmptyView>
+                            <Label
+                                Padding="20,20,55,0"
+                                FontSize="25"
+                                HorizontalOptions="FillAndExpand"
+                                HorizontalTextAlignment="Center"
+                                Text="No Crew results found =("
+                                TextColor="Gray"
+                                VerticalOptions="FillAndExpand" />
+                        </CollectionView.EmptyView>
+                    </CollectionView>
+                </Grid>
+            </pancakeView:PancakeView>
+        </ScrollView>
+    </Grid>
+</ContentPage>

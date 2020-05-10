@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             BackgroundColor="White"
+             NavigationPage.HasNavigationBar="False"
+             xmlns:st="clr-namespace:Plugin.SharedTransitions;assembly=Plugin.SharedTransitions"
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+              xmlns:viewmodels="clr-namespace:SDSD.ViewModels"
+    x:DataType="viewmodels:LoginViewModel"
+             x:Class="SDSD.Views.LoginPage">
+    <Grid HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.2*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Image 
+            Aspect="AspectFill" 
+            Source="ship.jpg" 
+            HorizontalOptions="FillAndExpand" 
+            VerticalOptions="FillAndExpand" 
+            st:Transition.Name="ship"/>
+        <pv:PancakeView 
+            x:Name="DetailsView" 
+            Grid.Row="1" 
+            CornerRadius="30,30,0,0" 
+            Padding="35,35,35,0" 
+            Margin="0,-40,0,0" 
+            BackgroundColor="White" 
+            VerticalOptions="FillAndExpand">
+           
+            <ScrollView 
+                HorizontalOptions="FillAndExpand" 
+                VerticalOptions="FillAndExpand" 
+                VerticalScrollBarVisibility="Never">
+                <StackLayout 
+                   >
+                    <!--<BoxView 
+                        HeightRequest="1" 
+                        VerticalOptions="Start" 
+                        HorizontalOptions="FillAndExpand" 
+                        BackgroundColor="#E4E4E4"/>-->
+                    <Image 
+                        Aspect="AspectFit" 
+                        Source="download.png" 
+                        Margin="0,40,0,40"
+                        WidthRequest="200" 
+                        HorizontalOptions="Center" 
+                        VerticalOptions="Center" />
+                    <!--<BoxView 
+                        HeightRequest="1" 
+                        VerticalOptions="Start" 
+                        HorizontalOptions="FillAndExpand" 
+                        BackgroundColor="#E4E4E4"/>-->
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="0"
+                Text="Username" 
+                TextColor="Gray" 
+                FontSize="15" 
+                        FontAttributes="Bold"
+                FontFamily="ThemeFontSemiBold" 
+                VerticalOptions="StartAndExpand" 
+                HorizontalOptions="Start"/>
+                        <Frame 
+                            Grid.Row="1"
+                        HasShadow="True" 
+                        Padding="0" 
+                        BorderColor="#103E72"
+                        HorizontalOptions="FillAndExpand">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image 
+                                HeightRequest="40" 
+                                WidthRequest="40" 
+                                Margin="10,0" 
+                                Source="waecaccount.png"/>
+                                <Entry 
+                                Grid.Column="1" 
+                                Placeholder="admin@sdsd.com" 
+                                TextColor="Black"
+                                FontAttributes="Bold"
+                                    FontFamily="ThemeFontSemiBold" 
+                                Text="{Binding Username}"
+                                FontSize="15" 
+                                HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+
+                    <Grid Margin="0,20,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Label
+                            Grid.Row="0"
+                Text="Password" 
+                TextColor="Gray" 
+                FontSize="15" 
+                        FontAttributes="Bold"
+                FontFamily="ThemeFontSemiBold" 
+                VerticalOptions="StartAndExpand" 
+                        HorizontalOptions="Start"/>
+                        <Frame 
+                            Grid.Row="1"
+                        HasShadow="True" 
+                        Padding="0" 
+                        BorderColor="#103E72"
+                        HorizontalOptions="FillAndExpand">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <Image
+                                HeightRequest="40" 
+                                WidthRequest="40"
+                                Margin="10,0" 
+                                Source="waeclock.png"/>
+                                <Entry 
+                                Grid.Column="1" 
+                                Placeholder="************" 
+                                TextColor="Black" 
+                                IsPassword="True"
+                                FontAttributes="Bold"
+                                    FontFamily="ThemeFontSemiBold" 
+                                FontSize="15" 
+                                Text="{Binding Password}"
+                                HorizontalOptions="FillAndExpand" 
+                                VerticalOptions="Center"/>
+                            </Grid>
+                        </Frame>
+                    </Grid>
+                    
+                    
+                   
+                </StackLayout>
+            </ScrollView>
+        </pv:PancakeView>
+        <pv:PancakeView 
+            Grid.Row="2" 
+            HeightRequest="70" 
+            BackgroundGradientAngle="270">
+            <pv:PancakeView.BackgroundGradientStops>
+                <pv:GradientStopCollection>
+                    <pv:GradientStop Color="#103E72" Offset="0" />
+                    <pv:GradientStop Color="#C63339" Offset="0.5" />
+                    <pv:GradientStop Color="#7B7B7B" Offset="1" />
+                </pv:GradientStopCollection>
+            </pv:PancakeView.BackgroundGradientStops>
+            <Label
+                Text="Login" 
+                TextColor="White" 
+                FontSize="20" 
+                FontFamily="ThemeFontSemiBold" 
+                VerticalOptions="Center" 
+                HorizontalTextAlignment="Center"/>
+            <pv:PancakeView.GestureRecognizers>
+               <TapGestureRecognizer Command="{Binding NavigateToMainPageCommand}" NumberOfTapsRequired="1" />
+            </pv:PancakeView.GestureRecognizers>
+        </pv:PancakeView>
+    </Grid>
+</ContentPage>
