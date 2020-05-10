@@ -14,6 +14,7 @@ namespace SDSD.ViewModels
 {
     public class MainPageViewModel : BaseViewModel
     {
+        #region Ctor
         public MainPageViewModel()
         {
             Vessels = new ObservableCollection<Vessel>();
@@ -24,42 +25,60 @@ namespace SDSD.ViewModels
             GetVessels();
             GetCrews();
         }
+        #endregion
+
+        #region Get Username from session
         private string _username = Settings.Username.ToUpper();
         public string Username
         {
             get { return _username; }
             set { SetProperty(ref _username, value); }
         }
+        #endregion
+
+        #region Navigate to Add Crew Page
         private async Task ExecuteNavigateToAddCrewPageCommand()
         {
             await Navigation.PushPopupAsync(new AddCrewPage());
         }
-        
+        #endregion
+
+        #region Get Selected item from vessel list
         Vessel _vesselSelectedItem;
         public Vessel VesselSelectedItem
         {
             get { return _vesselSelectedItem; }
             set { SetProperty(ref _vesselSelectedItem, value); }
         }
+        #endregion
+
+        #region Delete Vessel Method
         private async Task ExecuteDeleteVesselCommand()
         {
             await App.Database.DeleteItemAsync(_vesselSelectedItem);
-            
-        }
 
+        }
+        #endregion
+
+        #region Navigate to Add Vessel Page
         private async Task ExecuteNavigateToAddVesselPageCommand()
         {
             await Navigation.PushPopupAsync(new AddVesselPage());
         }
+        #endregion
 
+        #region Global Varaibles
         public ObservableCollection<Vessel> Vessels { get; set; }
         public ObservableCollection<Crew> Crews { get; set; }
         public Command NavigateToAddVesselPageCommand { get; }
         public Command NavigateToAddCrewPageCommand { get; }
         public Command DeleteVesselCommand { get; }
+        #endregion
+
+        #region Load Vessel item from SQLlite
         void GetVessels()
         {
-            var r =  App.Database.GetItemsAsync().Result;
+            var r = App.Database.GetItemsAsync().Result;
             if (r != null)
             {
                 foreach (var item in r)
@@ -68,9 +87,11 @@ namespace SDSD.ViewModels
                 }
                 SetVesselBackground();
             }
-            
-        }
 
+        }
+        #endregion
+
+        #region Load Crew item from SQLlite
         void GetCrews()
         {
             var r = App.Database.GetCrewItemsAsync().Result;
@@ -85,6 +106,9 @@ namespace SDSD.ViewModels
             }
 
         }
+        #endregion
+
+        #region Set Background image for vessel item
         void SetVesselBackground()
         {
             for (int i = 0; i < Vessels.Count(); i++)
@@ -95,14 +119,16 @@ namespace SDSD.ViewModels
                     Vessels[i].vesselBackground = "mask2.png";
             }
         }
+        #endregion
 
+        #region Set Background image for crew item
         void SetCrewImage()
         {
             for (int i = 0; i < Crews.Count(); i++)
             {
                 if (Crews[i].role == "Master")
                     Crews[i].crewImage = "mcdonalds.png";
-                else if(Crews[i].role == "Chief Engineer")
+                else if (Crews[i].role == "Chief Engineer")
                     Crews[i].crewImage = "careem.png";
                 else if (Crews[i].role == "Technical Manager")
                     Crews[i].crewImage = "centrepoint.png";
@@ -110,6 +136,9 @@ namespace SDSD.ViewModels
                     Crews[i].crewImage = "starbucks.png";
             }
         }
+        #endregion
+
+        #region Subscribing to message sent from add vessel page
         public void SubscribeAddVessel()
         {
             MessagingCenter.Subscribe<AddVesselPageViewModel, Vessel>(this, "addVessel", (s, param) =>
@@ -118,6 +147,9 @@ namespace SDSD.ViewModels
                 SetVesselBackground();
             });
         }
+        #endregion
+
+        #region Subscribing to message sent from add crew page
         public void SubscribeAddCrew()
         {
             MessagingCenter.Subscribe<AddCrewPageViewModel, Crew>(this, "addCrew", (s, param) =>
@@ -127,9 +159,14 @@ namespace SDSD.ViewModels
                 SetCrewImage();
             });
         }
-        public  bool IsOddNumber(int value)
+        #endregion
+
+        #region Get even number
+        public bool IsOddNumber(int value)
         {
             return value % 2 != 0;
         }
+        #endregion
+
     }
 }

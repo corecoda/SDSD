@@ -11,6 +11,7 @@ namespace SDSD.ViewModels
 {
     public class AddCrewPageViewModel : BaseViewModel
     {
+        #region Ctor
         public AddCrewPageViewModel()
         {
             VesselTypes = new List<string>();
@@ -18,12 +19,16 @@ namespace SDSD.ViewModels
             ClosePopUpCommand = new Command(async () => await ExecuteClosePopUpCommand());
             GetVesselType();
         }
+        #endregion
 
+        #region Close Pop Up Method
         private async Task ExecuteClosePopUpCommand()
         {
             await PopupNavigation.Instance.PopAsync(true);
         }
+        #endregion
 
+        #region Add Crew Method
         private async Task ExecuteAddCrewCommand()
         {
             if (string.IsNullOrEmpty(FirstName))
@@ -62,7 +67,7 @@ namespace SDSD.ViewModels
                     lastName = LastName,
                     age = int.Parse(Age),
                     role = Role,
-                    vesselType= VesselType
+                    vesselType = VesselType
                 };
 
                 var response = await App.Database.SaveCrewItemAsync(crew);
@@ -72,11 +77,15 @@ namespace SDSD.ViewModels
                 await PopupNavigation.Instance.PopAsync(true);
             }
         }
+        #endregion
 
+        #region Global Variables
         public List<string> VesselTypes { get; set; }
         public Command AddCrewCommand { get; }
         public Command ClosePopUpCommand { get; }
+        #endregion
 
+        #region Load Vessel Type from SQL DB
         void GetVesselType()
         {
             var r = App.Database.GetItemsAsync().Result;
@@ -85,6 +94,9 @@ namespace SDSD.ViewModels
                 VesselTypes.Add(item.vesselName);
             }
         }
+        #endregion
+
+        #region Crew Params
         private string _firstName;
         public string FirstName
         {
@@ -115,5 +127,7 @@ namespace SDSD.ViewModels
             get { return _vesselType; }
             set { SetProperty(ref _vesselType, value); }
         }
+        #endregion
+
     }
 }

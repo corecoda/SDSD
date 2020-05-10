@@ -12,10 +12,14 @@ namespace SDSD.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
+        #region Ctor
         public LoginViewModel()
         {
             NavigateToMainPageCommand = new Command(async () => await ExecuteNavigateToMainPageCommand());
         }
+        #endregion
+
+        #region Variables
         private string _username;
         public string Username
         {
@@ -28,6 +32,10 @@ namespace SDSD.ViewModels
             get { return _password; }
             set { SetProperty(ref _password, value); }
         }
+        public Command NavigateToMainPageCommand { get; }
+        #endregion
+
+        #region Navigate to Dashboard If Authorized
         private async Task ExecuteNavigateToMainPageCommand()
         {
             if (string.IsNullOrEmpty(Username))
@@ -42,12 +50,15 @@ namespace SDSD.ViewModels
                 return;
             }
             if (IsAuthenticated(Username, Password))
-                    App.Current.MainPage = new MainPage();
+                App.Current.MainPage = new MainPage();
             else
                 await DisplayAlert("Information", "Invalid Credentials!", "OK");
         }
+        #endregion
 
-        public Command NavigateToMainPageCommand { get; }
+
+        
+        #region Check If User is Authorized
         private bool IsAuthenticated(string username, string password)
         {
             using (UserDialogs.Instance.Loading("one moment please...", null, null, true, MaskType.Black))
@@ -61,8 +72,11 @@ namespace SDSD.ViewModels
                 else
                     return false;
             }
-               
+
         }
+        #endregion
+
+        #region User Credentials
         List<User> users = new List<User>()
         {
             new User
@@ -76,5 +90,7 @@ namespace SDSD.ViewModels
                 password = "password"
             },
         };
+        #endregion
+
     }
 }

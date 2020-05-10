@@ -11,18 +11,22 @@ namespace SDSD.ViewModels
 {
     public class AddVesselPageViewModel : BaseViewModel
     {
+        #region Ctor
         public AddVesselPageViewModel()
         {
             VesselTypes = new ObservableCollection<VesselType>();
             AddVesselCommand = new Command(async () => await ExecuteAddVesselCommand());
             ClosePopUpCommand = new Command(async () => await ExecuteClosePopUpCommand());
         }
+        #endregion
 
-        
+        #region Global Varaibles
         public Command AddVesselCommand { get; }
         public Command ClosePopUpCommand { get; }
         public ObservableCollection<VesselType> VesselTypes { get; set; }
+        #endregion
 
+        #region Vessel Params
         private string _vesselName;
         public string VesselName
         {
@@ -42,6 +46,9 @@ namespace SDSD.ViewModels
             get { return _vesselType; }
             set { SetProperty(ref _vesselType, value); }
         }
+        #endregion
+
+        #region Add Vessel Method
         private async Task ExecuteAddVesselCommand()
         {
             if (string.IsNullOrEmpty(VesselName))
@@ -78,11 +85,15 @@ namespace SDSD.ViewModels
                 await PopupNavigation.Instance.PopAsync(true);
             }
         }
+        #endregion
 
+        #region Close PopUp Method
         private async Task ExecuteClosePopUpCommand()
         {
             await PopupNavigation.Instance.PopAsync(true);
         }
+        #endregion
+
 
     }
 }
